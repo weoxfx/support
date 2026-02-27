@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: telegram-support-bot
+    runtime: python
+    buildCommand: pip install httpx aiohttp
+    startCommand: python support_bot.py
+    envVars:
+      - key: BOT_TOKEN
+        sync: false
+      - key: ADMIN_ID
+        sync: false
+      - key: GROQ_API_KEY
+        sync: false
