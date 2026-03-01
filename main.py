@@ -16,6 +16,26 @@ Get FREE Groq key:    https://console.groq.com → API Keys
 Get bot token:        @BotFather on Telegram
 Get your Telegram ID: @userinfobot on Telegram
 """
+import threading
+from http.server import HTTPServer, BaseHTTPRequestHandler
+import os
+
+class Handler(BaseHTTPRequestHandler):
+    def do_GET(self):
+        self.send_response(200)
+        self.end_headers()
+        self.wfile.write(b"OK")
+    def log_message(self, *args):
+        pass  # suppress logs
+
+def run_health_server():
+    port = int(os.environ.get("PORT", 8080))
+    HTTPServer(("0.0.0.0", port), Handler).serve_forever()
+
+# Start it in a background thread before your bot starts
+threading.Thread(target=run_health_server, daemon=True).start()
+
+# ... rest of your bot code
 
 import httpx
 import asyncio
